@@ -29,4 +29,4 @@ install:
     - cat $HOME/.ssh/id_rsa.pub > $HOME/.ssh/authorized_keys
 
 script:
-    - export CPP=g++ && rake test
+    - export CPP=g++ && export CODE_RUNNER_SYSTEM=generic_linux && rake test
