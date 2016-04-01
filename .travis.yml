@@ -11,7 +11,6 @@ addons:
     apt:
         packages:
         - subversion
-        - gcc-4.8
 
 before_install:
     - svn co svn://svn.code.sf.net/p/coderunner/svn/installer_new coderunner_svn
