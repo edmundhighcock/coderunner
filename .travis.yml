@@ -24,6 +24,9 @@ before_install:
 
 install:
     - bundle install
+    - mkdir -m 700 -p -v $HOME/.ssh
+    - ssh-keygen -t rsa -N '' -f $HOME/.ssh/id_rsa
+    - cat $HOME/.ssh/id_rsa.pub > $HOME/.ssh/authorized_keys
 
 script:
     - export CPP=g++ && rake test
