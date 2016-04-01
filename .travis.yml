@@ -21,4 +21,4 @@ install:
     - bundle install
 
 script:
-    - rake test
+    - export CPP=g++ && rake test
