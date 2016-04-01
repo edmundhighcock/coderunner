@@ -27,6 +27,7 @@ install:
     - mkdir -m 700 -p -v $HOME/.ssh
     - ssh-keygen -t rsa -N '' -f $HOME/.ssh/id_rsa
     - cat $HOME/.ssh/id_rsa.pub > $HOME/.ssh/authorized_keys
+    - cat $HOME/.ssh/id_rsa.pub > $HOME/.ssh/known_hosts
 
 script:
     - export CPP=g++ && export CODE_RUNNER_SYSTEM=generic_linux && rake test
