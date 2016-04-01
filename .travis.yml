@@ -1,0 +1,25 @@
+sudo: false
+language: ruby
+rvm:
+  - 1.9.3
+notifications:
+    email:
+        on_success: change
+        on_failure: change
+
+addons:
+    apt:
+        packages:
+        - subversion
+        - gcc-4.8
+
+before_install:
+    - svn co svn://svn.code.sf.net/p/coderunner/svn/installer_new coderunner_svn
+    - cd coderunner_svn && make hd all rb PREFIX=$PWD/tools &&
+      export PATH=$PWD/tools/bin:$PATH
+
+install:
+    - bundle install
+
+script:
+    - rake test
