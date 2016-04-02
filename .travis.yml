@@ -16,8 +16,8 @@ addons:
 
 before_install:
     - svn co svn://svn.code.sf.net/p/coderunner/svn/installer_new coderunner_svn
-    - cd coderunner_svn && make hd all rb PREFIX=$PWD/tools &&
-      export PATH=$PWD/tools/bin:$PATH
+    - cd coderunner_svn && make hd all rb PREFIX=$PWD/tools
+    - echo "export PATH=$PWD/tools/bin:$PATH" >> $HOME/.bashrc
     - wget ftp://ftp.gnu.org/gnu/gsl/gsl-1.16.tar.gz
     - tar -xf gsl-1.16.tar.gz && cd gsl-1.16 && ./configure --prefix=$PWD/gsl116 &&
       make && make install && export PATH=$PWD/gsl116/bin:$PATH
