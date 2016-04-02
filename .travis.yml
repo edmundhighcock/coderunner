@@ -28,6 +28,8 @@ install:
     - ssh-keygen -t rsa -N '' -f $HOME/.ssh/id_rsa
     - cat $HOME/.ssh/id_rsa.pub > $HOME/.ssh/authorized_keys
     - cat $HOME/.ssh/id_rsa.pub > $HOME/.ssh/known_hosts
+    - echo "Host *" >> $HOME/.ssh/config &&
+      echo "  NoHostAuthenticationForLocalhost yes" >> $HOME/.ssh/config
 
 script:
     - export CPP=g++ && export CODE_RUNNER_SYSTEM=generic_linux && rake test
