@@ -19,8 +19,9 @@ before_install:
     - cd coderunner_svn && make hd all rb PREFIX=$HOME/tools
     - echo "export PATH=$HOME/tools/bin:$PATH" >> $HOME/.bashrc
     - wget ftp://ftp.gnu.org/gnu/gsl/gsl-1.16.tar.gz
-    - tar -xf gsl-1.16.tar.gz && cd gsl-1.16 && ./configure --prefix=$PWD/gsl116 &&
-      make && make install && export PATH=$PWD/gsl116/bin:$PATH
+    - tar -xf gsl-1.16.tar.gz && cd gsl-1.16 && ./configure --prefix=$HOME/gsl116 &&
+      make && make install
+    - echo "export PATH=$HOME/gsl116/bin:$PATH" >> $HOME/.bashrc
 
 install:
     - bundle install
