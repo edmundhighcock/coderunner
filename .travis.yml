@@ -32,7 +32,7 @@ install:
     - cat $HOME/.ssh/id_rsa.pub > $HOME/.ssh/known_hosts
     - echo "Host *" >> $HOME/.ssh/config &&
       echo "  NoHostAuthenticationForLocalhost yes" >> $HOME/.ssh/config
-    - echo "export CODE_RUNNER_SYSTEM=generic_linux" > $HOME/.bashrc
+    - echo "export CODE_RUNNER_SYSTEM=generic_linux" >> $HOME/.bashrc
     - source $HOME/.bashrc
 
 script:
