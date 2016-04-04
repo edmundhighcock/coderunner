@@ -22,6 +22,7 @@ before_install:
     - tar -xf gsl-1.16.tar.gz && cd gsl-1.16 && ./configure --prefix=$HOME/gsl116 &&
       make && make install && cd ..
     - echo "export PATH=$HOME/gsl116/bin:$PATH" >> $HOME/.bashrc
+    - source $HOME/.bashrc
 
 install:
     - bundle install
