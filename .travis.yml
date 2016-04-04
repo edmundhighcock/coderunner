@@ -26,6 +26,7 @@ before_install:
 install:
     - bundle install
     - rake build
+    - ls; pwd; ls pkg
     - gem install -l pkg/coderunner*.gem
     - mkdir -m 700 -p -v $HOME/.ssh
     - ssh-keygen -t rsa -N '' -f $HOME/.ssh/id_rsa
