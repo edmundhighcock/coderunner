@@ -18,17 +18,16 @@ before_install:
     - rvm use 2.2.0 --install --binary --fuzzy --default
     - svn co svn://svn.code.sf.net/p/coderunner/svn/installer_new coderunner_svn
     - cd coderunner_svn && make hd all PREFIX=$HOME/tools && cd ..
-    - echo "export PATH=$HOME/tools/bin:$PATH" >> $HOME/.bashrc
+    - echo "export PATH=\$HOME/tools/bin:\$PATH" >> $HOME/.bashrc
     - wget ftp://ftp.gnu.org/gnu/gsl/gsl-1.16.tar.gz
     - tar -xf gsl-1.16.tar.gz && cd gsl-1.16 && ./configure --prefix=$HOME/gsl116 &&
       make && make install && cd ..
-    - echo "export PATH=$HOME/gsl116/bin:$PATH" >> $HOME/.bashrc
+    - echo "export PATH=\$HOME/gsl116/bin:\$PATH" >> $HOME/.bashrc
     - source $HOME/.bashrc
 
 install:
     - bundle install
     - rake build
-    - ls; pwd; ls pkg
     - gem install -l pkg/coderunner*.gem
     - mkdir -m 700 -p -v $HOME/.ssh
     - ssh-keygen -t rsa -N '' -f $HOME/.ssh/id_rsa
