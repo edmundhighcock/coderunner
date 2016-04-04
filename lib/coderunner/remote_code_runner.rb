@@ -166,7 +166,7 @@ export ROWS=#{Terminal.terminal_size[0]}
 export COLS=#{Terminal.terminal_size[1]}
 source /etc/bashrc /etc/profile > /dev/null 2> /dev/null
 #{%w{ ~/.bashrc ~/.bash_login ~/.bash_profile ~/.profile}.map{|w| "source #{w} > /dev/null 2> /dev/null "}.join(" ; ")}
-ruby --version, which ruby; rvm list; gem list; pwd; ls
+ruby --version; which ruby; rvm list; gem list; pwd; ls
 if [ "$CODE_RUNNER_COMMAND" ]
 	then
 		$CODE_RUNNER_COMMAND runner_eval #{string.inspect} -Z #{@copts.inspect.inspect}
