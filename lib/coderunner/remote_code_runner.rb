@@ -9,7 +9,7 @@ class RemoteCodeRunner < CodeRunner
 # 	class << self
 # 		undef_method :graphkit_multiple_runners_from_frame_array
 # 			def method_missing(method, *args)
-# 		raise "Not a CodeRunner class method #{method}" unless (CodeRunner.methods + [:puts]).include? method 
+# 		raise "Not a CodeRunner class method #{method}" unless (CodeRunner.methods + [:puts]).include? method
 # 		if method.to_s =~ /=$/
 # 			raise NoMethodError.new("unknown set method: #{method}")
 # # 			@attributes[method] = args[0]
@@ -18,14 +18,14 @@ class RemoteCodeRunner < CodeRunner
 # 		data = retrieve(method, *args)
 # 		if method.to_s =~ /graphkit/
 # 			return Marshal.load(data)
-# 		else 
+# 		else
 # 			puts data
 # 		end
-# 	end	
 # 	end
-		
+# 	end
+
 	attr_accessor :combined_ids, :component_ids, :ids, :combined_run_list, :component_run_list, :run_list, :remote_cache, :libraries
-	
+
 # 	include Log
 # 	puts instance_methods; exit
 # 	SHOULD_NOT_BE_CALLED = :add_component
@@ -61,13 +61,13 @@ class RemoteCodeRunner < CodeRunner
 					runner =  old_new(host, folder, copts)
 					runner.update
 					runner.remote_cache = copts[:cache]
-					unless FileTest.exist? cache_folder(host, folder) 
+					unless FileTest.exist? cache_folder(host, folder)
 						FileUtils.makedirs cache_folder(host, folder)
 					end
 					File.open(cache_file(host, folder), 'w') do |file|
 						file.puts Marshal.dump(runner)
 					end
-					return runner					
+					return runner
 				end
 			else
 				return old_new(host, folder, copts)
@@ -81,7 +81,7 @@ class RemoteCodeRunner < CodeRunner
 			cache_folder(host, folder) + '/runner.msl'
 		end
 	end
-	
+
 	DISPLAY_REMOTE_INVOCATION = false
 
 	RUNNER_CACHE = ENV['HOME'] + '/.coderunner/remote_cache/'
@@ -117,7 +117,7 @@ class RemoteCodeRunner < CodeRunner
 		@copts.delete(:E)
 	end
 	def method_missing(method, *args)
-		raise "Not a CodeRunner method #{method}" unless (CodeRunner.instance_methods + [:puts]).include? method 
+		raise "Not a CodeRunner method #{method}" unless (CodeRunner.instance_methods + [:puts]).include? method
 # 		ep method; STDIN.gets
 
 		if method.to_s =~ /=$/
@@ -133,10 +133,10 @@ class RemoteCodeRunner < CodeRunner
 			end
 			#return Marshal.load(data)
 			return data
-		else 
+		else
 			puts data
 		end
-	end	
+	end
 	def retrieve_method(method, *args)
 		eputs "Calling Remote Method: #{method}"
     retrieve("#{method.to_s}(*#{args.inspect})")
@@ -157,18 +157,19 @@ class RemoteCodeRunner < CodeRunner
 
 		eputs "Connecting to server using '#{@ssh_command}'..."
 		eputs "Loading folder #{@folder}..."
-# 		eval = 
+# 		eval =
 # 		> /dev/null 2> /dev/null > /dev/null 2> /dev/null
 #{%w{ ~/.bashrc ~/.bash_login ~/.bash_profile ~/.profile}.map{|w| "source #{w} > /dev/null 2> /dev/null "}.join(" && ")}
 		shell_script = <<EOF
 cd #@folder
 export ROWS=#{Terminal.terminal_size[0]}
-export COLS=#{Terminal.terminal_size[1]} 
+export COLS=#{Terminal.terminal_size[1]}
 source /etc/bashrc /etc/profile > /dev/null 2> /dev/null
 #{%w{ ~/.bashrc ~/.bash_login ~/.bash_profile ~/.profile}.map{|w| "source #{w} > /dev/null 2> /dev/null "}.join(" ; ")}
+ruby --version, which ruby; rvm list; gem list; pwd; ls
 if [ "$CODE_RUNNER_COMMAND" ]
 	then
-		$CODE_RUNNER_COMMAND runner_eval #{string.inspect} -Z #{@copts.inspect.inspect}	
+		$CODE_RUNNER_COMMAND runner_eval #{string.inspect} -Z #{@copts.inspect.inspect}
 	else
 		coderunner runner_eval #{string.inspect} -Z #{@copts.inspect.inspect}
 fi
@@ -179,20 +180,20 @@ EOF
 		eputs shell_script if DISPLAY_REMOTE_INVOCATION
 		data = %x[#@ssh_command '#{shell_script}']
  		#ep data
-		eputs "\nDisconnecting from server..."	
+		eputs "\nDisconnecting from server..."
 		eprint "Extracting data..."
 		data_arr = []
 		in_dump = false
 		i = 0
 		loop do
-			
+
 			if  i>=80 #data.size
 				break
-			
-			else  #if data[i-1] == "E" and data[i-2] == "_" 
+
+			else  #if data[i-1] == "E" and data[i-2] == "_"
 # 				ep data[i...(i + "code_runner_server_dump_start_E".size)], '.....'
 # 			ep data[(-"code_runner_server_dump_end_E\n".size-i+1)..-i] if in_dump
-		
+
 # 				string = data[0...i]
 	# 			p string
 				if !in_dump and data[i...(i + "code_runner_server_dump_start_E".size)] == "code_runner_server_dump_start_E" #   =~ /.*Begin Output\n\Z/
@@ -200,7 +201,7 @@ EOF
 					data = data[(i + "code_runner_server_dump_start_E".size)..-1]
 					in_dump = true
 					i = 0
-				elsif in_dump and data[(-"code_runner_server_dump_end_E\n".size-i+1)..-i] == "code_runner_server_dump_end_E\n" #  
+				elsif in_dump and data[(-"code_runner_server_dump_end_E\n".size-i+1)..-i] == "code_runner_server_dump_end_E\n" #
 					data_arr.push data[0...(data.size - ("code_runner_server_dump_end_E\n".size+i-1))]
 # 					ep "OUT DUMP"
 	# 				ep data_arr
@@ -212,11 +213,11 @@ EOF
 			end
 			i+=1
 		end
-		
+
 		eputs "done"
 # 		ep data_arr; exit
-		
-		
+
+
 		begin
 			case data_arr.size
 			when 0
