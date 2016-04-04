@@ -15,6 +15,7 @@ addons:
         - libgsl0-dev
 
 before_install:
+    - rvm use 2.2.0 --default
     - svn co svn://svn.code.sf.net/p/coderunner/svn/installer_new coderunner_svn
     - cd coderunner_svn && make hd all PREFIX=$HOME/tools && cd ..
     - echo "export PATH=$HOME/tools/bin:$PATH" >> $HOME/.bashrc
