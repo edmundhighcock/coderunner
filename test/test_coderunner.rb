@@ -44,7 +44,7 @@ class TestSubmission  < MiniTest::Test
 	end
 	def test_status_loop
 		unless ENV['SHORT_TEST']
-			ENV['CODE_RUNNER_LAUNCHER'] = '42323490qw4q4432407Q2342U3'
+			CodeRunner::GLOBAL_OPTIONS[:launcher] = '42323490qw4q4432407Q2342U3'
 			#@mutex = Mutex.new
 			#@launcher_started =
 			@thread = Thread.new{CodeRunner.start_launcher(0.5,10)}
@@ -52,7 +52,7 @@ class TestSubmission  < MiniTest::Test
 			CodeRunner.submit(Y: 'test/submission_results', C: 'cubecalc', m: 'sleep', X: Dir.pwd + '/test/submission_results/cubecalc', p: '{sleep_time: 2}')
 			CodeRunner.status_loop(Y: 'test/submission_results')
 			#@thread.kill # This is commented out because it causes a Heisenbug... the kill signal can get trapped and cause the deletion of the 'submitting' lock file. This line is unnecessary because the thread will die when the program exits
-			ENV.delete('CODE_RUNNER_LAUNCHER')
+      CodeRunner::GLOBAL_OPTIONS[:launcher] = nil
 		end
 	end
 	def testanalysis
@@ -384,7 +384,7 @@ end # if false/true
 #end
 #
 #
-ENV['CR_NON_INTERACTIVE'] = 'true'
+CodeRunner::GLOBAL_OPTIONS[:non_interactive] = true
 class TestFortranNamelistC < MiniTest::Test
 	def setup
 	end

@@ -278,24 +278,14 @@ class CodeRunner
     end
   end
 
+  # Used by the help method defined in interactive_methods.rb
   def self.reference(class_or_method, copts={})
-    code_folders = Dir.recursive_entries(SCRIPT_FOLDER + '/code_modules').grep(/\/ri$/).map{|fold| ['-d', fold]}.flatten
-#     ep code_folders
-
-#     require 'rdoc/ri/driver'
-
-# "
-#     op = @ri_count ? [] : (@ri_count = true; ['--no-use-cache'])
-#     trap(1){puts 'No help available'}
-#     at_exit{raise ""}
-#     p op
     begin
       eputs "Looking up #{class_or_method}"
-      RDoc::RI::Driver.run ['-d', SCRIPT_FOLDER + '/ri', class_or_method.to_s] + code_folders
-    rescue => err
+      RDoc::RI::Driver.run [class_or_method.to_s] 
+    rescue SystemExit => err
       eputs "Unknown class or method or no help available: #{err}"
     end
-#     trap(1){}
   end
 
   def self.directory(id, copts={})
@@ -309,6 +299,7 @@ class CodeRunner
     runner.make_film_from_lists(copts[:G], copts[:g], copts[:F])
   end
 
+  # Deprecated
   def self.generate_documentation(username = nil, copts = {})
     ep 'username', username||=ENV['USER']
 
@@ -420,7 +411,7 @@ EOF
   end
 
   def self.launcher_directory
-    ENV['HOME'] + "/.coderunner/to_launch/#{ENV['CODE_RUNNER_LAUNCHER']}"
+    ENV['HOME'] + "/.coderunner/to_launch/#{global_options(:launcher)}"
   end
   
   def self.start_launcher(refresh, max_queue, copts={})
@@ -437,7 +428,7 @@ EOF
     at_exit{FileUtils.rm_r tl}
     FileUtils.makedirs tl
 
-    unless ENV['CODE_RUNNER_LAUNCHER'] =~ /serial/
+    unless global_options(:launcher) =~ /serial/
       mutex = Mutex.new
       processes= []
       command_list = {}

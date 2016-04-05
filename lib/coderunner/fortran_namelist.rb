@@ -301,10 +301,10 @@ def self.add_code_variable_to_namelist(namelist, var, value)
 	enum = $~ ? $~[:num] : nil
 	return if rcp.namelists[namelist] and rcp.namelists[namelist][:variables].map{|v, h| (h[:code_name] or v).to_s.downcase.to_sym}.include? var
 	namelists = rcp.namelists
-	namelist_file = 'namelists.rb'
+	_namelist_file = 'namelists.rb'
 # 	end
 	raise "This namelist: #{namelist} should have an enumerator and does not have one" if enum and (not rcp.namelists[namelist] or not rcp.namelists[namelist][:enumerator])
-  unless ENV['CR_NON_INTERACTIVE']
+  unless CodeRunner.global_options(:non_interactive)
   	return unless Feedback.get_boolean("An unknown variable has been found in this input file: \n\n\t Namelist: #{namelist}, Name: #{code_name}, Sample Value: #{value.inspect}.\n\nDo you wish to add it to the CodeRunner module? (Recommended: answer yes as long as the variable is not a typo)")
   end
 
@@ -320,7 +320,7 @@ def self.add_code_variable_to_namelist(namelist, var, value)
 	namelists[namelist][:should_include] ||= "true"
 	namelists[namelist][:variables] ||= {}
 	raise "Shouldn't have got here" if namelists[namelist][:variables][var]
-	tst = nil
+	_tst = nil
 
 	case value
 	when Float
@@ -366,7 +366,7 @@ def self.add_code_variable_to_namelist(namelist, var, value)
 		attr_accessor var
 	end
   save_namelists
-	edit_variable_help(namelist, var) unless ENV['CR_NON_INTERACTIVE']
+	edit_variable_help(namelist, var) unless CodeRunner.global_options(:non_interactive)
 # 	folder = File.dirname(__FILE__)
 # 	File.open(folder + '/' + namelist_file, 'w'){|f| f.puts namelists.pretty_inspect}
 end	
@@ -1230,14 +1230,14 @@ def self.process_synchronisation(source, nms, all_variables_in_source, namelist_
 
 	raise "No namelists found" if nms.size == 0
 	eputs nms.keys.zip(nms.values.map{|vs| vs.size})
-	eputs "Namelists to be added to. (Press Enter)"; STDIN.gets unless ENV['CR_NON_INTERACTIVE']
+	eputs "Namelists to be added to. (Press Enter)"; STDIN.gets unless CodeRunner.global_options(:non_interactive)
 	n = 0
   ep nms
 # 	ep nms.values.sum
 	nms.values.sum.each do |var|
 		eputs var if variable_exists? var
 	end
-	eputs "Conflicting Variables. (Press Enter)";; STDIN.gets unless ENV['CR_NON_INTERACTIVE']
+	eputs "Conflicting Variables. (Press Enter)";; STDIN.gets unless CodeRunner.global_options(:non_interactive)
 	nms.each do |namelist, vars|
 		ep namelist
 		ep vars

@@ -732,10 +732,14 @@ def copy_extra_files
 end
 
 def generate_run_name
+  if CodeRunner::GLOBAL_OPTIONS[:short_run_name]
+    @run_name = %[v#{@version}_id_#@id]
+  else
     @run_name = %[v#@version] + @naming_pars.inject("") do |str, par|
       str+="_#{par}_#{send(par).to_s[0...8]}"
     end
     @run_name = @run_name.gsub(/\s+/, "_").gsub(/\//, '') + "_id_#@id"
+  end
 end
 
 def write_info

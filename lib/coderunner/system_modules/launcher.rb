@@ -5,10 +5,10 @@ class CodeRunner
   # an interactive session on a supercomputer.
   module Launcher
     def launcher_prefix
-		  ENV['CODE_RUNNER_LAUNCHER']
+		  CodeRunner.global_options(:launcher)
     end
     def use_launcher
-      launcher_prefix and launcher_prefix.size > 0
+      launcher_prefix
     end
     def queue_status_launcher
 			#%x[cat #{CodeRunner.launcher_directory}/queue_status.txt | grep sh]  +
