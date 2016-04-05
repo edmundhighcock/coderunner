@@ -12,13 +12,14 @@ addons:
         packages:
         - gsl-bin
         - libgsl0-dev
+        - libnetcdf-dev
+        - libhdf5-serial-dev
+        - libyaml-dev
+        - libreadline-dev
+        - libncurses5-dev
 
 before_install:
     - rvm use 2.2.0 --install --binary --fuzzy --default
-    - cd dependencies && ./download_dependencies.sh &&
-      make hd all PREFIX=$HOME/tools && cd ..
-    - echo "export PATH=\$HOME/tools/bin:\$PATH" >> $HOME/.bashrc
-    - source $HOME/.bashrc
 
 install:
     - bundle install
