@@ -19,10 +19,6 @@ before_install:
     - svn co svn://svn.code.sf.net/p/coderunner/svn/installer_new coderunner_svn
     - cd coderunner_svn && make hd all PREFIX=$HOME/tools && cd ..
     - echo "export PATH=\$HOME/tools/bin:\$PATH" >> $HOME/.bashrc
-    - wget ftp://ftp.gnu.org/gnu/gsl/gsl-1.16.tar.gz
-    - tar -xf gsl-1.16.tar.gz && cd gsl-1.16 && ./configure --prefix=$HOME/gsl116 &&
-      make && make install && cd ..
-    - echo "export PATH=\$HOME/gsl116/bin:\$PATH" >> $HOME/.bashrc
     - source $HOME/.bashrc
 
 install:
@@ -36,7 +32,6 @@ install:
     - echo "Host *" >> $HOME/.ssh/config &&
       echo "  NoHostAuthenticationForLocalhost yes" >> $HOME/.ssh/config
     - echo "export CODE_RUNNER_SYSTEM=generic_linux" >> $HOME/.bashrc
-    - cat $HOME/.bashrc
     - source $HOME/.bashrc
 
 script:
