@@ -2,7 +2,7 @@ class RemoteCodeRunner < CodeRunner
 	(CodeRunner.instance_methods - (Object.instance_methods + Log.instance_methods)).each do |meth|
 		next if [:sort_runs, :print_out, :filter, :similar_runs, :get_max, :get_min, :generate_combined_ids, :setup_run_class, :get_run_class_name, :readout, :graphkit_from_lists, :graphkit, :graphkit_shorthand, :run_graphkit_shorthand, :axiskit, :filtered_ids,  :filtered_run_list, :make_film_from_lists, :sweep_graphkits, :cache, :merged_runner_info].include? meth
 		next if CodeRunner::DEFAULT_RUNNER_OPTIONS.keys.include? meth
-		next if CodeRunner::DEFAULT_RUNNER_OPTIONS.keys.map{|meth| (meth.to_s + '=').to_sym}.include? meth
+		next if CodeRunner::DEFAULT_RUNNER_OPTIONS.keys.map{|method| (method.to_s + '=').to_sym}.include? meth
 
 		undef_method meth
 	end
@@ -157,15 +157,12 @@ class RemoteCodeRunner < CodeRunner
 
 		eputs "Connecting to server using '#{@ssh_command}'..."
 		eputs "Loading folder #{@folder}..."
-# 		eval =
-# 		> /dev/null 2> /dev/null > /dev/null 2> /dev/null
-#{%w{ ~/.bashrc ~/.bash_login ~/.bash_profile ~/.profile}.map{|w| "source #{w} > /dev/null 2> /dev/null "}.join(" && ")}
 		shell_script = <<EOF
 cd #@folder
 export ROWS=#{Terminal.terminal_size[0]}
 export COLS=#{Terminal.terminal_size[1]}
 source /etc/bashrc /etc/profile > /dev/null 2> /dev/null
-#{%w{ ~/.bash_login ~/.bash_profile ~/.profile ~/.bashrc}.map{|w| "source #{w} > /dev/null 2> /dev/null "}.join(" ; ")}
+#{%w{ .bash_login .bash_profile .profile .bashrc .rvm/scripts/rvm}.map{|w| "source $HOME/#{w} > /dev/null 2> /dev/null "}.join(" ; ")}
 if [ "$CODE_RUNNER_COMMAND" ]
 	then
 		$CODE_RUNNER_COMMAND runner_eval #{string.inspect} -Z #{@copts.inspect.inspect}
@@ -174,7 +171,6 @@ if [ "$CODE_RUNNER_COMMAND" ]
 fi
 
 EOF
-# coderunner runner_eval #{"#{method.to_s}(*#{args.inspect})".inspect} -Z #{@copts.inspect.inspect}
 
 		eputs shell_script if DISPLAY_REMOTE_INVOCATION
 		data = %x[#@ssh_command '#{shell_script}']
